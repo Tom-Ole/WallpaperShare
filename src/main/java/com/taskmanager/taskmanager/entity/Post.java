@@ -22,8 +22,6 @@ public class Post {
 
     private Long userId;
 
-    private List<Long> commentIds;
-
     private LocalDateTime createdAt;
 
 
@@ -59,12 +57,7 @@ public class Post {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
-    public List<Long> getCommentIds() {
-        return commentIds;
-    }
-    public void setComments(List<Long> comments) {
-        this.commentIds = comments;
-    }
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -80,7 +73,6 @@ public class Post {
                 ", imgUrl='" + imgUrl + '\'' +
                 ", likes=" + likes +
                 ", userId=" + userId +
-                ", comments=" + commentIds +
                 ", createdAt=" + createdAt +
                 '}';
     }

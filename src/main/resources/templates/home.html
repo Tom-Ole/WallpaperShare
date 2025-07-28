@@ -16,12 +16,13 @@
 
             <div class="followed-creator">
                 <!-- Carousell of creator you follow (In the design of Instas Story) -->
+                 <!-- Create some Dummy data -->
             </div>
 
             <div class="feed">
                 <div class="feed-item" th:each="post : ${posts}">
                     <div class="post-header">
-                        <p>${post.creator.username}</p>
+                        <p th:text="${post.creator.username}"></p>
                         <img th:src="${post.creator.profilePictureUrl}" alt="Profile Picture" class="profile-picture">
                     </div>
                     <div class="post-content">
@@ -35,8 +36,17 @@
                                 <div class="post-comments-container">
                                     <div th:each="comment : ${post.comments}">
                                         <div class="comment">
+                                            <div class="comment-author">
+                                                <img th:src="${comment.user.profilePictureUrl}" alt="User Profile Picture"
+                                                    class="comment-profile-picture">
+                                                <p class="comment-author-username" th:text="${comment.user.username}"></p>
+                                            </div>
                                             <p class="comment-text" th:text="${comment.content}"></p>
                                             <p class="comment-date" th:text="${comment.createdAt}"></p>
+                                            <div class="comment-actions">
+                                                <button class="like-comment-button" th:text="${comment.likes + ' Likes'}"
+                                                    th:onclick="'console.log(\'Like Comment +1\')'"></button>
+                                            </div>
                                         </div>
 
                                     </div>

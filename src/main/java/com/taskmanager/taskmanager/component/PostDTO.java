@@ -5,15 +5,14 @@ import com.taskmanager.taskmanager.entity.UserEntity;
 
 import java.util.List;
 
-import com.taskmanager.taskmanager.entity.Comment;
 
 public class PostDTO {
 
     private Post post;
-    private List<Comment> comments;
+    private List<CommentDTO> comments;
     private UserEntity creator;
 
-    public PostDTO(Post post, List<Comment> comments, UserEntity creator) {
+    public PostDTO(Post post, List<CommentDTO> comments, UserEntity creator) {
         this.post = post;
         this.comments = comments;
         this.creator = creator;
@@ -25,10 +24,10 @@ public class PostDTO {
     public void setPost(Post post) {
         this.post = post;
     }
-    public List<Comment> getComments() {
+    public List<CommentDTO> getComments() {
         return comments;
     }
-    public void setComments(List<Comment> comments) {
+    public void setComments(List<CommentDTO> comments) {
         this.comments = comments;
     }
     public UserEntity getCreator() {

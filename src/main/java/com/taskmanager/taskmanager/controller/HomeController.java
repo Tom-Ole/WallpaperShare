@@ -1,12 +1,14 @@
 package com.taskmanager.taskmanager.controller;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.taskmanager.taskmanager.component.PostDTO;
+import com.taskmanager.taskmanager.component.CommentDTO;
 import com.taskmanager.taskmanager.entity.Comment;
 import com.taskmanager.taskmanager.entity.UserEntity;
 import com.taskmanager.taskmanager.repository.CommentRepository;
@@ -29,14 +31,25 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(Model model) {
+        List<Comment> comments = commentRepository.findAll();
+
+        
+        // Use the postId from the Comment to find all comments to the related post for all Posts.
+
 
         List<PostDTO> posts = postRepository.findAll().stream()
             .map(post -> {
-                List<Comment> comments = commentRepository.findByPostId(post.getId());
+                List<CommentDTO> commentDTOs = comments.stream()
+                    .filter(comment -> Objects.equals(comment.getPostId(), post.getId()))
+                    .map(comment -> new CommentDTO(comment, userRepository.findById(comment.getUserId()).orElse(new UserEntity())))
+                    .toList();
+
                 UserEntity creator = userRepository.findById(post.getUserId()).orElse(null);
-                return new PostDTO(post, comments, creator);
-            })
-            .toList();
+                return new PostDTO(post, commentDTOs, creator);
+            }).toList();
+
+        // Remove all Posts that have no creator assigned
+        posts.removeIf(postDTO -> postDTO.getCreator() == null);
 
         model.addAttribute("posts", posts);
 

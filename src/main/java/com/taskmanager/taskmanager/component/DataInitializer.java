@@ -47,24 +47,6 @@ public class DataInitializer implements CommandLineRunner {
 
         if (postRepository.count() == 0) {
 
-            List<Comment> comments = List.of(
-                    new Comment("This is a comment on post 1", 1L, 1L, 100),
-                    new Comment("This is a comment on post 2", 1L, 2L, 1),
-                    new Comment("This is a comment on post 3", 1L, 3L, 1),
-                    new Comment("This is a comment on post 4", 1L, 4L, 1),
-                    new Comment("This is a comment on post 5", 1L, 5L, 1),
-                    new Comment("This is a comment on post 1 the second", 1L, 1L, 1),
-                    new Comment("This is a comment on post 1 the third", 1L, 1L, 10)
-            // new Comment(1L, "This is a comment on post 1", 1L, 1L, 100),
-            // new Comment(2L,"This is a comment on post 2", 1L, 2L, 1),
-            // new Comment(3L,"This is a comment on post 3", 1L, 3L, 1),
-            // new Comment(4L,"This is a comment on post 4", 1L, 4L, 1),
-            // new Comment(5L,"This is a comment on post 5", 1L, 5L, 1),
-            // new Comment(6L,"This is a comment on post 1 the second", 1L, 1L, 1),
-            // new Comment(7L,"This is a comment on post 1 the third", 1L, 1L, 10)
-            );
-
-            commentRepository.saveAll(comments);
 
             for (int i = 1; i <= 5; i++) {
                 final int currentI = i;
@@ -75,22 +57,21 @@ public class DataInitializer implements CommandLineRunner {
                 post.setLikes(currentI * currentI);
                 post.setUserId(1L);
 
-                Post savedPost = postRepository.save(post); // Speichern und ID generieren lassen
+                Post savedPost = postRepository.save(post);
 
-                // Jetzt zugeordnete Comments speichern
-                List<Comment> commentsForPost = comments.stream()
-                        .filter(comment -> comment.getPostId() == (long) currentI)
-                        .peek(comment -> comment.setPostId(savedPost.getId()))
-                        .toList();
+                // Assign comment / comments to the post
 
-                commentRepository.saveAll(commentsForPost);
+                for (int j = 1; j <= Math.ceil(Math.random() * 10); j++) {
+                    Comment comment = new Comment();
+                    comment.setContent("Comment " + j + " for post " + currentI);
+                    comment.setCreatedAt(java.time.LocalDateTime.now());
+                    comment.setLikes(j);
+                    comment.setPostId(savedPost.getId());
+                    comment.setUserId(1L); // Assuming the admin user is the commenter
+                    commentRepository.save(comment);
+                }
 
-                // IDs der Comments als Longs speichern
-                savedPost.setComments(commentsForPost.stream()
-                        .map(Comment::getId)
-                        .toList());
-
-                postRepository.save(savedPost); // Aktualisieren mit zugeordneten Comments
+               
             }
             System.out.println("Sample posts created.");
         }
