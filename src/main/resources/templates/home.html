@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Feed - WallpaperShare</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/base.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}">
+</head>
+
+<body>
+    <div class="page-container">
+
+        <div th:insert="~{fragments/header :: header(currentPage='home')}"></div>
+
+        <div class="main-content">
+
+            <div class="followed-creator">
+                <!-- Carousell of creator you follow (In the design of Instas Story) -->
+            </div>
+
+            <div class="feed">
+                <div class="feed-item" th:each="post : ${posts}">
+                    <div class="post-header">
+                        <p>${post.creator.username}</p>
+                        <img th:src="${post.creator.profilePictureUrl}" alt="Profile Picture" class="profile-picture">
+                    </div>
+                    <div class="post-content">
+                        <img th:src="${post.post.imgUrl}" alt="Post Image" class="post-image">
+                        <div class="post-details">
+                            <p class="post-description" th:text="${post.post.content}"></p>
+                            <div class="post-actions">
+                                <button class="like-button" th:onclick="'console.log(\'Like +1\')'"
+                                    th:text="${post.post.likes + ' Likes'}"></button>
+
+                                <div class="post-comments-container">
+                                    <div th:each="comment : ${post.comments}">
+                                        <div class="comment">
+                                            <p class="comment-text" th:text="${comment.content}"></p>
+                                            <p class="comment-date" th:text="${comment.createdAt}"></p>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>

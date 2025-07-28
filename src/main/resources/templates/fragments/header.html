@@ -1,0 +1,43 @@
+<!-- fragments/header.html -->
+<header class="header" th:fragment="header(currentPage)">
+    <div class="header-brand">
+        <h1 class="header-logo">WallpaperShare</h1>
+        <p class="header-tagline">Stunning wallpapers</p>
+    </div>
+
+    <div class="header-nav-login-separator">
+
+        <nav>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="/home" class="nav-link" th:classappend="${currentPage == 'home'} ? 'active' : ''">
+                        <svg class="nav-icon" viewBox="0 0 24 24">
+                            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+                        </svg>
+                        <span class="nav-text">Home</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/explore" class="nav-link" th:classappend="${currentPage == 'explore'} ? 'active' : ''">
+                        <svg class="nav-icon" viewBox="0 0 24 24">
+                            <path
+                                d="M12,10A2,2 0 0,0 10,12C10,13.11 10.9,14 12,14C13.11,14 14,13.11 14,12A2,2 0 0,0 12,10Z" />
+                        </svg>
+                        <span class="nav-text">Explore</span>
+                    </a>
+                </li>
+                <!-- Add more nav items -->
+            </ul>
+        </nav>
+
+        <div class="user-profile">
+            <div class="user-info">
+                <div class="user-avatar">JD</div>
+                <div class="user-details">
+                    <div class="user-name">John Doe</div>
+                    <div class="user-status">Creator</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

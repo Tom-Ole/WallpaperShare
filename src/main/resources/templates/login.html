@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - WallpaperShare</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/base.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/auth.css}">
+
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-grid-1">
+            <div class="floating-elements">
+                <div class="floating-frame" style="--rotate: 12deg;"></div>
+                <div class="floating-frame" style="--rotate: -18deg;"></div>
+                <div class="floating-frame" style="--rotate: 8deg;"></div>
+            </div>
+            
+            <div class="brand-content">
+                <h1 class="brand-logo">WallpaperShare</h1>
+                <p class="brand-tagline">Discover & share stunning wallpapers from creators worldwide</p>
+                
+                <div class="wallpaper-gallery">
+                    <div class="wallpaper-thumb"></div>
+                    <div class="wallpaper-thumb"></div>
+                    <div class="wallpaper-thumb"></div>
+                    <div class="wallpaper-thumb"></div>
+                    <div class="wallpaper-thumb"></div>
+                    <div class="wallpaper-thumb"></div>
+                    <div class="wallpaper-thumb"></div>
+                    <div class="wallpaper-thumb"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="auth-grid-2">
+            <h1 class="auth-header">Login</h1>
+            <p class="auth-subtitle">Welcome back to your creative space</p>
+            <form th:action="@{/login}" method="post" class="auth-form">
+                <div class="auth-form-group">
+                    <label for="username" class="auth-form-label">Username:</label>
+                    <input type="text" id="username" name="username" class="auth-input" required placeholder="Enter your username">
+                </div>
+                <div class="auth-form-group">
+                    <label for="password" class="auth-form-label">Password:</label>
+                    <input type="password" id="password" name="password" class="auth-input" required placeholder="Enter your password">
+                </div>
+                <button type="submit" class="auth-btn">Login</button>
+                <div class="auth-links">
+                    <p>Don't have an account? <a th:href="@{/register}" class="auth-link">Register here</a></p>
+                </div>
+            </form>
+            <div th:if="${param.error}" class="auth-error" style="display: none;">
+                <p>Invalid username or password.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Animate wallpaper thumbnails on load
+        document.addEventListener('DOMContentLoaded', function() {
+            const thumbs = document.querySelectorAll('.wallpaper-thumb');
+            thumbs.forEach((thumb, index) => {
+                thumb.style.opacity = '0';
+                thumb.style.transform = 'translateY(30px) scale(0.8)';
+                thumb.style.transition = 'all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                
+                setTimeout(() => {
+                    thumb.style.opacity = '0.9';
+                    thumb.style.transform = 'translateY(0) scale(1)';
+                }, index * 150);
+            });
+        });
+    </script>
+</body>
+</html>
