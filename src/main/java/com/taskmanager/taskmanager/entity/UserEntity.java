@@ -26,20 +26,23 @@ public class UserEntity {
 
     private String profilePictureUrl;
 
+    private String description;
+
 
     public UserEntity() {}
 
-    public UserEntity(String username, String password, String role, String firstname, String lastname, String email) {
+    public UserEntity(String username, String password, String role, String firstname, String lastname, String email, String profilePictureUrl, String description) {
         this.username = username;
         this.password = password;
         this.role = role;
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
-        this.profilePictureUrl = "https://example.com/default-profile-picture.jpg"; // Default profile picture URL
+        this.profilePictureUrl = profilePictureUrl;
+        this.description = description;
     }
 
-    public UserEntity(Long id, String username, String password, String role, String firstname, String lastname, String email) {
+    public UserEntity(Long id, String username, String password, String role, String firstname, String lastname, String email, String profilePictureUrl, String description) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -47,7 +50,8 @@ public class UserEntity {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
-        this.profilePictureUrl = "https://example.com/default-profile-picture.jpg"; // Default profile picture URL
+        this.profilePictureUrl = profilePictureUrl;
+        this.description = description;
     }
 
     // Getters and Setters
@@ -99,6 +103,13 @@ public class UserEntity {
     public void setProfilePictureUrl(String profilePictureUrl) {
         this.profilePictureUrl = profilePictureUrl;
     }
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
 
     @Override
     public String toString() {
@@ -110,6 +121,7 @@ public class UserEntity {
                 ", lastname='" + lastname + '\'' +
                 ", email='" + email + '\'' +
                 ", profilePictureUrl='" + profilePictureUrl + '\'' +
+                ", description='" + description + '\'' +
                 '}';
     }
 

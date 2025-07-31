@@ -28,14 +28,29 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserEntity admin = userRepository.findByUsername(username).orElseThrow(() ->
-            new UsernameNotFoundException("User not found with username: " + username)
-        );
+        // UserEntity admin = userRepository.findByUsername(username).orElseThrow(() ->
+        //     new UsernameNotFoundException("User not found with username: " + username)
+        // );
 
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + admin.getRole()));
-        AuthUser authUser = new AuthUser(username, admin.getPassword(), admin.getRole(), admin.getFirstname(), admin.getLastname(), admin.getEmail());
-        authUser.setId(admin.getId());
+        // List<GrantedAuthority> authorities = new ArrayList<>();
+        // authorities.add(new SimpleGrantedAuthority("ROLE_" + admin.getRole()));
+        // AuthUser authUser = new AuthUser(username, admin.getPassword(), admin.getRole(), admin.getFirstname(), admin.getLastname(), admin.getEmail());
+        // authUser.setId(admin.getId());
+
+        UserEntity userEntity = userRepository.findByUsername(username)
+            .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
+
+        AuthUser authUser = new AuthUser(
+            userEntity.getUsername(),
+            userEntity.getPassword(),
+            List.of(new SimpleGrantedAuthority("ROLE_" + userEntity.getRole())),
+            userEntity.getId(),
+            userEntity.getFirstname(),
+            userEntity.getLastname(),
+            userEntity.getEmail(),
+            userEntity.getProfilePictureUrl(),
+            userEntity.getDescription()
+        );
 
         return authUser;
     }

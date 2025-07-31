@@ -1,81 +1,48 @@
 package com.taskmanager.taskmanager.entity;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
-@Entity
 public class AuthUser extends User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String displayName;
-    private String firstName;
-    private String lastName;
+    private String firstname;
+    private String lastname;
     private String email;
-    private String role;
+    private String profilePictureUrl;
+    private String description;
 
-    public AuthUser(String username, String password, Collection<? extends GrantedAuthority> authorities) {
+    public AuthUser(String username, String password, Collection<? extends GrantedAuthority> authorities,
+                    Long id, String firstname, String lastname, String email,
+                    String profilePictureUrl, String description) {
         super(username, password, authorities);
-    }
-
-    public AuthUser(String username, String password, String role, String firstName, String lastName, String email) {
-        super(username, password, new ArrayList<>(List.of(new SimpleGrantedAuthority("ROLE_" + role))));
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.id = id;
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.email = email;
-        this.displayName = firstName + " " + lastName;
-        this.role = role;
+        this.profilePictureUrl = profilePictureUrl;
+        this.description = description;
     }
 
-    // Getters and Setters
+    // Getters
     public Long getId() {
         return id;
     }
-    public void setId(Long id) {
-        this.id = id;
+    public String getFirstname() {
+        return firstname;
     }
-    public String getDisplayName() {
-        return displayName;
-    }
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
-    public String getFirstName() {
-        return firstName;
-    }
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-    public String getLastName() {
-        return lastName;
-    }
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public String getLastname() {
+        return lastname;
     }
     public String getEmail() {
         return email;
     }
-    public void setEmail(String email) {
-        this.email = email;
+    public String getProfilePictureUrl() {
+        return profilePictureUrl;
     }
-    public String getRole() {
-        return role;
+    public String getDescription() {
+        return description;
     }
-    public void setRole(String role) {
-        this.role = role;
-    }
-
 }
-
