@@ -1,7 +1,10 @@
 package com.taskmanager.taskmanager.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +18,6 @@ import com.taskmanager.taskmanager.repository.CommentRepository;
 import com.taskmanager.taskmanager.repository.PostRepository;
 import com.taskmanager.taskmanager.repository.UserRepository;
 
-
 @Controller
 public class HomeController {
 
@@ -23,33 +25,42 @@ public class HomeController {
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
 
-    public HomeController(PostRepository postRepository, CommentRepository commentRepository, UserRepository userRepository) {
+    public HomeController(PostRepository postRepository, CommentRepository commentRepository,
+            UserRepository userRepository) {
         this.postRepository = postRepository;
         this.commentRepository = commentRepository;
-        this.userRepository = userRepository;   
+        this.userRepository = userRepository;
     }
 
     @GetMapping("/")
     public String home(Model model) {
         List<Comment> comments = commentRepository.findAll();
+        List<UserEntity> users = userRepository.findAll();
 
-        
-        // Use the postId from the Comment to find all comments to the related post for all Posts.
+        Map<Long, UserEntity> userMap = users.stream()
+                .collect(Collectors.toMap(UserEntity::getId, user -> user));
 
+        Map<Long, List<Comment>> commentsByPostId = comments.stream()
+                .collect(Collectors.groupingBy(Comment::getPostId));
 
         List<PostDTO> posts = postRepository.findAll().stream()
-            .map(post -> {
-                List<CommentDTO> commentDTOs = comments.stream()
-                    .filter(comment -> Objects.equals(comment.getPostId(), post.getId()))
-                    .map(comment -> new CommentDTO(comment, userRepository.findById(comment.getUserId()).orElse(new UserEntity())))
-                    .toList();
+                .map(post -> {
+                    List<CommentDTO> commentDTOs = commentsByPostId
+                            .getOrDefault(post.getId(), List.of()).stream()
+                            .map(comment -> new CommentDTO(
+                                    comment,
+                                    userMap.getOrDefault(comment.getUserId(), new UserEntity())))
+                            .toList();
 
-                UserEntity creator = userRepository.findById(post.getUserId()).orElse(null);
-                return new PostDTO(post, commentDTOs, creator);
-            }).toList();
+                    UserEntity creator = userMap.get(post.getUserId());
+                    return new PostDTO(post, commentDTOs, creator);
+                })
+                .filter(postDTO -> postDTO.getCreator() != null)
+                .collect(Collectors.toList());
 
-        // Remove all Posts that have no creator assigned
-        posts.removeIf(postDTO -> postDTO.getCreator() == null);
+        // Sort posts by creation date in descending order
+        posts.sort((p1, p2) -> p2.getPost().getCreatedAt()
+                .compareTo(p1.getPost().getCreatedAt()));
 
         model.addAttribute("posts", posts);
 

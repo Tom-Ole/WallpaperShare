@@ -41,19 +41,31 @@ public class DataInitializer implements CommandLineRunner {
             admin.setFirstname("Admin");
             admin.setLastname("User");
             admin.setEmail("admin@example.com");
+            admin.setProfilePictureUrl("http://localhost:4000/get/bdb04cc6-c4b6-42a8-ab76-340e5060edbb.jpg");
             userRepository.save(admin);
             System.out.println("Admin user created with username 'admin' and password 'admin'");
         }
 
         if (postRepository.count() == 0) {
 
+            List<String> testPictures = List.of(
+                "http://localhost:4000/get/094d5a60-9546-4cd6-bc08-c7c2ac91d727.jpg",
+                "http://localhost:4000/get/25ef3b71-7a43-4111-b8c4-936897aeaa44.jpg",
+                "http://localhost:4000/get/5949fee9-efcb-42b4-b371-815ba1c1780e.webp",
+                "http://localhost:4000/get/b5e056ba-658c-4fff-8683-7766ae133d90.png",
+                "http://localhost:4000/get/bdb04cc6-c4b6-42a8-ab76-340e5060edbb.jpg",
+                "http://localhost:4000/get/c49405b6-24dd-4c34-920c-a409919eec6a.jpg",
+                "http://localhost:4000/get/d319e024-1789-488c-b426-12644040274c.webp",
+                "http://localhost:4000/get/fec17718-a2c6-472e-b885-709308ba2505.webp"
+            );
 
-            for (int i = 1; i <= 5; i++) {
+
+            for (int i = 1; i <= 8; i++) {
                 final int currentI = i;
                 Post post = new Post();
                 post.setContent("Content for post " + currentI);
-                post.setCreatedAt(java.time.LocalDateTime.now());
-                post.setImgUrl("https://example.com/image" + currentI + ".jpg");
+                post.setCreatedAt(java.time.LocalDateTime.now().plusDays(i));
+                post.setImgUrl(testPictures.get(currentI % testPictures.size()));
                 post.setLikes(currentI * currentI);
                 post.setUserId(1L);
 

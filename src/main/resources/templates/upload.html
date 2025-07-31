@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Feed - WallpaperShare</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/base.css}">
+</head>
+
+<body>
+    <div class="page-container">
+
+        <div th:insert="~{fragments/header :: header(currentPage='home')}"></div>
+
+        <div class="main-content">
+
+             <form th:action="@{/upload}" method="post" enctype="multipart/form-data">
+                <div class="upload-form">
+                    <h2>Upload Wallpaper</h2>
+                    <input type="file" name="file" accept="image/*" required>
+                    <textarea name="content" placeholder="content" required></textarea>
+                    <button type="submit">Upload</button>
+                </div>
+
+        </div>
+    </div>
+</body>
+
+</html>
