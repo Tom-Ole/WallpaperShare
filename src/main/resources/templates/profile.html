@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Profile - WallpaperShare</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/base.css}">
+</head>
+
+<body>
+    <div class="page-container">
+
+        <div th:insert="~{fragments/header :: header(currentPage='home')}"></div>
+
+        <div class="main-content">
+
+            <div> 
+                <h2>User Profile</h2>
+                <p>Username: <span th:text="${user.username}"></span></p>
+                <p>Firstname: <span th:text="${user.firstname}"></span></p>
+                <p>Lastname: <span th:text="${user.lastname}"></span></p>
+                <p>Email: <span th:text="${user.email}"></span></p>
+                <p>Password: <span th:text="${user.password}"></span></p>
+                <img th:src="@{${user.profilePictureUrl}}" alt="Profile Picture" class="profile-picture" />
+
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>
