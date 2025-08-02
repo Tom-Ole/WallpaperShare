@@ -1,5 +1,6 @@
 package com.taskmanager.taskmanager.component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.boot.CommandLineRunner;
@@ -33,6 +34,9 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+
+        List<Long> userIds = new ArrayList<Long>();
+
         if (userRepository.findByUsername("admin").isEmpty()) {
             UserEntity admin = new UserEntity();
             admin.setUsername("admin");
@@ -42,9 +46,26 @@ public class DataInitializer implements CommandLineRunner {
             admin.setLastname("User");
             admin.setEmail("admin@example.com");
             admin.setProfilePictureUrl("http://localhost:4000/get/bdb04cc6-c4b6-42a8-ab76-340e5060edbb.jpg");
-            userRepository.save(admin);
+            UserEntity savedAdmin = userRepository.save(admin);
+            userIds.add(savedAdmin.getId());
             System.out.println("Admin user created with username 'admin' and password 'admin'");
+
+            for (int i = 1; i <= 3; ++i) {
+                UserEntity user = new UserEntity();
+                user.setUsername("user" + i);
+                user.setPassword(passwordEncoder.encode("password"));
+                user.setRole("USER");
+                user.setFirstname("User" + i);
+                user.setLastname("Test" + i);
+                user.setEmail("user" + i + "@example.com");
+                user.setProfilePictureUrl("http://localhost:4000/get/094d5a60-9546-4cd6-bc08-c7c2ac91d727.jpg");
+                UserEntity savedUser = userRepository.save(user);
+                userIds.add(savedUser.getId());
+
+            }
+            System.out.println("Sample users created.");
         }
+
 
         if (postRepository.count() == 0) {
 
@@ -67,7 +88,7 @@ public class DataInitializer implements CommandLineRunner {
                 post.setCreatedAt(java.time.LocalDateTime.now().plusDays(i));
                 post.setImgUrl(testPictures.get(currentI % testPictures.size()));
                 post.setLikes(currentI * currentI);
-                post.setUserId(1L);
+                post.setUserId(userIds.get(i % userIds.size())); // Assigning to one of the created users
 
                 Post savedPost = postRepository.save(post);
 
