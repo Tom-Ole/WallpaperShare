@@ -32,10 +32,11 @@
 
         <div class="user-profile">
             <div class="user-info">
-                <div class="user-avatar">JD</div>
+                <!-- <div class="user-avatar" th:text="${#authentication.principal.profilePictureUrl}"></div> -->
+                <img class="user-avatar" th:src="${#authentication.principal.profilePictureUrl}" alt="User Avatar" />
                 <div class="user-details">
-                    <div class="user-name">John Doe</div>
-                    <div class="user-status">Creator</div>
+                    <div class="user-name" th:text="${#authentication.principal.username}">John Doe</div>
+                    <div class="user-status" th:text="${#authentication.principal.authorities[0].authority}">Creator</div>
                 </div>
             </div>
         </div>

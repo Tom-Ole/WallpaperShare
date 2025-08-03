@@ -1,7 +1,6 @@
 package com.taskmanager.taskmanager.entity;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

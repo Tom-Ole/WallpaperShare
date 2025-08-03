@@ -13,6 +13,8 @@ public class AuthUser extends User {
     private String email;
     private String profilePictureUrl;
     private String description;
+    private String role;
+
 
     public AuthUser(String username, String password, Collection<? extends GrantedAuthority> authorities,
                     Long id, String firstname, String lastname, String email,
@@ -24,6 +26,7 @@ public class AuthUser extends User {
         this.email = email;
         this.profilePictureUrl = profilePictureUrl;
         this.description = description;
+        this.role = authorities.iterator().next().getAuthority();
     }
 
     // Getters
@@ -45,4 +48,7 @@ public class AuthUser extends User {
     public String getDescription() {
         return description;
     }
+    public String getRole() {
+    return role;
+}
 }
